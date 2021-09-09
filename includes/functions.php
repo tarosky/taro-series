@@ -58,11 +58,11 @@ function taro_series_parent_post_type() {
  */
 function taro_series_parent_post_type_args() {
 	return apply_filters( 'taro_series_parent_post_type_args', [
-		'label'        => __( 'Series', 'taro-series' ),
-		'public'       => true,
-		'hierarchical' => false,
-		'has_archive'  => false,
-		'show_in_rest' => true,
+		'label'           => __( 'Series', 'taro-series' ),
+		'public'          => true,
+		'hierarchical'    => false,
+		'has_archive'     => false,
+		'show_in_rest'    => true,
 		'capability_type' => 'page',
 		'supports'        => [ 'title', 'editor', 'author', 'thumbnail' ],
 		'menu_icon'       => 'dashicons-book-alt',
@@ -107,7 +107,7 @@ function taro_series_parent_id( $post = null ) {
 	if ( taro_series_parent_post_type() === $post->post_type ) {
 		return $post->ID;
 	} elseif ( taro_series_can_be( $post->post_type ) ) {
-		return (int) get_post_meta( $post->ID, taro_series_meta_key(),true );
+		return (int) get_post_meta( $post->ID, taro_series_meta_key(), true );
 	} else {
 		return 0;
 	}
@@ -250,7 +250,7 @@ function taro_series_index_query( $post = null, $args = [] ) {
  * @param array  $args   Arguments passed to template.
  */
 function taro_series_template_part( $name, $suffix = '', $args = [] ) {
-	$dirs = [ get_stylesheet_directory() ];
+	$dirs         = [ get_stylesheet_directory() ];
 	$template_dir = get_template_directory();
 	if ( $dirs[0] !== $template_dir ) {
 		$dirs[] = $template_dir;
@@ -258,7 +258,7 @@ function taro_series_template_part( $name, $suffix = '', $args = [] ) {
 	array_push( $dirs, taro_series_dir() );
 	$files = [ $name . '.php' ];
 	if ( $suffix ) {
-		array_unshift( $files,  $name . '-' . $suffix . '.php' );
+		array_unshift( $files, $name . '-' . $suffix . '.php' );
 	}
 	$found = '';
 	foreach ( $files as $file ) {

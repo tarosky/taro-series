@@ -38,7 +38,7 @@ class Setting extends Singleton {
 			$post_types = apply_filters( 'taro_series_post_types_choices', array_values( array_filter( $post_types, function( WP_Post_Type $post_type ) {
 				return ! in_array( $post_type->name, [ 'attachment', taro_series_parent_post_type() ], true );
 			} ) ) );
-			$value = (array) get_option( 'taro_series_post_types', [] );
+			$value      = (array) get_option( 'taro_series_post_types', [] );
 			foreach ( $post_types as $post_type ) {
 				printf(
 					'<label style="display: inline-block; margin: 0 1em 1em 0;"><input type="checkbox" name="taro_series_post_types[]" value="%s" %s /> %s</label>',

@@ -57,24 +57,24 @@ class SeriesEditor extends Singleton {
 		?>
 		<p style="padding-top: 10px; margin-bottom: 10px;">
 			<label>
-				<input name="series_is_finished" type="checkbox" value="1" <?php checked( taro_series_is_finished( $post ) ) ?> />
-				<?php esc_html_e( 'This series is finished', 'taro-series' ) ?>
+				<input name="series_is_finished" type="checkbox" value="1" <?php checked( taro_series_is_finished( $post ) ); ?> />
+				<?php esc_html_e( 'This series is finished', 'taro-series' ); ?>
 			</label>
 		</p>
 		<hr />
 		<p style="margin: 10px 0;">
 			<label>
-				<?php esc_html_e( 'Finish At', 'taro-series' ) ?><br />
-				<input name="series_finish_at" type="date" class="widefat" value="<?php echo esc_attr( taro_series_finish_at( $post ) ) ?>" /><br />
-				<span style="display: block; margin-top: 5px;" class="description"><?php esc_html_e( 'Optional. If you need to announce the finish date of this series, please set this.', 'taro-series' ) ?></span>
+				<?php esc_html_e( 'Finish At', 'taro-series' ); ?><br />
+				<input name="series_finish_at" type="date" class="widefat" value="<?php echo esc_attr( taro_series_finish_at( $post ) ); ?>" /><br />
+				<span style="display: block; margin-top: 5px;" class="description"><?php esc_html_e( 'Optional. If you need to announce the finish date of this series, please set this.', 'taro-series' ); ?></span>
 			</label>
 		</p>
 		<hr />
 		<p style="margin: 10px 0;">
 			<label>
-				<?php esc_html_e( 'Total Articles', 'taro-series' ) ?><br />
+				<?php esc_html_e( 'Total Articles', 'taro-series' ); ?><br />
 				<input name="series_total" type="number" class="widefat" value="<?php echo esc_attr( taro_series_total( $post ) ); ?>" />
-				<span style="display: block; margin-top: 5px;" class="description"><?php esc_html_e( 'Optional. If you need to announce the total amount of articles preliminary, please set this.', 'taro-series' ) ?></span>
+				<span style="display: block; margin-top: 5px;" class="description"><?php esc_html_e( 'Optional. If you need to announce the total amount of articles preliminary, please set this.', 'taro-series' ); ?></span>
 			</label>
 		</p>
 		<?php
@@ -105,7 +105,7 @@ class SeriesEditor extends Singleton {
 		foreach ( $columns as $key => $label ) {
 			$new_columns[ $key ] = $label;
 			if ( 'title' === $key ) {
-				$new_columns[ 'series' ] = __( 'Series', 'taro-series' );
+				$new_columns['series'] = __( 'Series', 'taro-series' );
 			}
 		}
 		return $new_columns;

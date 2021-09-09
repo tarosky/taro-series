@@ -23,31 +23,31 @@ class SeriesList extends RestApi {
 	 */
 	protected function get_args( $method ) {
 		return [
-			'post_type' => [
-				'type' => 'string',
-				'required' => true,
+			'post_type'      => [
+				'type'              => 'string',
+				'required'          => true,
 				'validate_callback' => function( $var ) {
 					return taro_series_can_be( $var );
 				},
 			],
-			's' => [
+			's'              => [
 				'type'    => 'string',
 				'default' => '',
 			],
-			'p'  => [
+			'p'              => [
 				'type'    => 'int',
 				'default' => 0,
 			],
 			'posts_per_page' => [
-				'type'    => 'int',
-				'default' => 10,
+				'type'              => 'int',
+				'default'           => 10,
 				'validate_callback' => function( $var ) {
 					return ( -1 === $var ) || ( 0 < $var );
 				},
 			],
-			'order' => [
-				'type'    => 'string',
-				'default' => 'DESC',
+			'order'          => [
+				'type'              => 'string',
+				'default'           => 'DESC',
 				'validate_callback' => function( $var ) {
 					return in_array( $var, [ 'DESC', 'ASC' ], true );
 				},
@@ -59,10 +59,10 @@ class SeriesList extends RestApi {
 	 * @inheritDoc
 	 */
 	public function callback( \WP_REST_Request $request ) {
-		$p = $request->get_param( 'p' );
+		$p         = $request->get_param( 'p' );
 		$post_args = [
-			'post_type'      => taro_series_parent_post_type(),
-			'no_found_rows'  => true,
+			'post_type'     => taro_series_parent_post_type(),
+			'no_found_rows' => true,
 		];
 		if ( 0 < $p ) {
 			$post_args = array_merge( $post_args, [
@@ -75,7 +75,7 @@ class SeriesList extends RestApi {
 				'order'          => $request->get_param( 'order' ),
 				'orderby'        => 'date',
 			] );
-			$s = $request->get_param( 's' );
+			$s         = $request->get_param( 's' );
 			if ( $s ) {
 				$post_args['s'] = $s;
 			}

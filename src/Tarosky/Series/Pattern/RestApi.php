@@ -52,7 +52,7 @@ abstract class RestApi extends Singleton {
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response|\WP_Error
 	 */
-	abstract public function callback( \WP_REST_Request  $request );
+	abstract public function callback( \WP_REST_Request $request );
 
 	/**
 	 * Register API.

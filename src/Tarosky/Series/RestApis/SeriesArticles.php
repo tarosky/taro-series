@@ -32,8 +32,8 @@ class SeriesArticles extends RestApi {
 	protected function get_args( $method ) {
 		$args = [
 			'series_id' => [
-				'required' => true,
-				'type'     => 'int',
+				'required'          => true,
+				'type'              => 'int',
 				'validate_callback' => function( $post_id ) {
 					$post = get_post( $post_id );
 					return $post && ( taro_series_parent_post_type() === $post->post_type );
@@ -52,8 +52,8 @@ class SeriesArticles extends RestApi {
 						'default' => 10,
 					],
 					'paged'          => [
-						'type'    => 'int',
-						'default' => 1,
+						'type'              => 'int',
+						'default'           => 1,
 						'sanitize_callback' => function( $var ) {
 							return max( 1, $var );
 						},
@@ -181,11 +181,11 @@ class SeriesArticles extends RestApi {
 			'postType'      => get_post_type( $post ),
 			'postTypeLabel' => get_post_type_object( get_post_type( $post ) )->label,
 			'link'          => ( 'publish' === $post->post_status ) ? get_permalink( $post ) : get_preview_post_link( $post ),
-			'editLink'     => get_edit_post_link( $post, 'api' ),
+			'editLink'      => get_edit_post_link( $post, 'api' ),
 			'date'          => $post->post_date,
 			'dateFormatted' => mysql2date( get_option( 'date_format', 'Y-m-d' ) . ' ' . get_option( 'time_format', 'H:i:s' ), $post->post_date ),
 			'status'        => $post->post_status,
-			'statusLabel'   => get_post_status_object( $post->post_status )->label
+			'statusLabel'   => get_post_status_object( $post->post_status )->label,
 		];
 	}
 

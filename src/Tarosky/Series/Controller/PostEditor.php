@@ -39,7 +39,7 @@ class PostEditor extends Singleton {
 	 *
 	 * @param \WP_Post $post post object.
 	 */
-	public function meta_box_callback( \WP_Post $post) {
+	public function meta_box_callback( \WP_Post $post ) {
 		// Select series.
 		$can    = apply_filters( 'taro_series_change_parent_post', current_user_can( 'edit_post', $post->ID ), $post );
 		$series = taro_series_get( $post );
@@ -64,7 +64,7 @@ class PostEditor extends Singleton {
 			// Enqueue script.
 			wp_enqueue_script( 'taro-series-post-editor' );
 			?>
-			<div id="taro-series-selector" data-post-id="<?php echo $series ? esc_attr( $series->ID ) : '0' ?>" data-post-type="<?php echo esc_attr( $post->post_type ); ?>"></div>
+			<div id="taro-series-selector" data-post-id="<?php echo $series ? esc_attr( $series->ID ) : '0'; ?>" data-post-type="<?php echo esc_attr( $post->post_type ); ?>"></div>
 			<?php
 		}
 	}
@@ -101,7 +101,8 @@ class PostEditor extends Singleton {
 		if ( ! $series ) {
 			return $states;
 		}
-		$states[ 'series' ] = sprintf( _x( 'Series "%s"', 'series-state', 'taro-series' ), get_the_title( $series ) );
+		// translators: %s is series naem.
+		$states['series'] = sprintf( _x( 'Series "%s"', 'series-state', 'taro-series' ), get_the_title( $series ) );
 		return $states;
 	}
 }
