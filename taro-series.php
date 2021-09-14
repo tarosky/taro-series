@@ -1,8 +1,8 @@
 <?php
 /**
-Plugin Name: Real Time Validation for Contact Form 7
+Plugin Name: Taro Series
 Plugin URI: https://wordpress.org/plugins/taro-series/
-Description: Add realtime validation for Contact Form 7.
+Description: Add serries feature to your WordPress site.
 Author: Tarosky INC.
 Version: nightly
 Author URI: https://tarosky.co.jp/

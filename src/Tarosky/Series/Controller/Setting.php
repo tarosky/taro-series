@@ -35,7 +35,7 @@ class Setting extends Singleton {
 		// Register fields.
 		add_settings_field( 'taro_series_post_types', __( 'Post Type', 'taro-series' ), function() {
 			$post_types = get_post_types( [ 'public' => true ], OBJECT );
-			$post_types = apply_filters( 'taro_series_post_types_choices', array_values( array_filter( $post_types, function( WP_Post_Type $post_type ) {
+			$post_types = apply_filters( 'taro_series_post_types_choices', array_values( array_filter( $post_types, function( \WP_Post_Type $post_type ) {
 				return ! in_array( $post_type->name, [ 'attachment', taro_series_parent_post_type() ], true );
 			} ) ) );
 			$value      = (array) get_option( 'taro_series_post_types', [] );
