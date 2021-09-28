@@ -7,21 +7,23 @@
  * @var array $args
  */
 
-$query = taro_series_index_query( null, [
-	'post_status' => [ 'publish', 'future' ],
-] );
+$query = taro_series_index_query();
 if ( ! $query || ! $query->have_posts() ) {
 	return;
 }
+// Enqueue style if OK.
+\Tarosky\Series\Customizer\StyleLoading::load_style();
 $args = wp_parse_args( $args, [
-	'title' => '',
+	'title'      => '',
+	'link'       => '',
+	'link_label' => '',
 ] );
 ?>
-<nav class="taro-series">
+<nav class="taro-series-toc">
 	<?php if ( $args['title'] ) : ?>
-		<h2 class="taro-series-title"><?php echo esc_html( apply_filters( 'taro_series_index_title', $args['title'], $query ) ); ?></h2>
+		<h2 class="taro-series-toc-title"><?php echo esc_html( apply_filters( 'taro_series_index_title', $args['title'], $query ) ); ?></h2>
 	<?php endif; ?>
-	<ol class="taro-series-list">
+	<ol class="taro-series-toc-list">
 		<?php
 		while ( $query->have_posts() ) {
 			$query->the_post();
@@ -30,4 +32,11 @@ $args = wp_parse_args( $args, [
 		wp_reset_postdata();
 		?>
 	</ol>
+	<?php if ( $query->found_posts > $query->post_count && $args['link'] ) : ?>
+	<p class="taro-series-toc-link">
+		<a class="taro-series-toc-link-button" href="<?php echo esc_attr( $args['link'] ) ?>">
+			<?php echo esc_html( $args['link_label'] ); ?>
+		</a>
+	</p>
+	<?php endif; ?>
 </nav>

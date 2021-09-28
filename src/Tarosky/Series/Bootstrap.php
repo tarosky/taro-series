@@ -4,8 +4,18 @@ namespace Tarosky\Series;
 
 
 use Tarosky\Series\Controller\PostEditor;
+use Tarosky\Series\Controller\Rewrite;
 use Tarosky\Series\Controller\SeriesEditor;
 use Tarosky\Series\Controller\Setting;
+use Tarosky\Series\Customizer\ArchiveLink;
+use Tarosky\Series\Customizer\IndexLimit;
+use Tarosky\Series\Customizer\Order;
+use Tarosky\Series\Customizer\OrderBy;
+use Tarosky\Series\Customizer\PostIndex;
+use Tarosky\Series\Customizer\ScheduledPosts;
+use Tarosky\Series\Customizer\SeriesIndex;
+use Tarosky\Series\Customizer\StyleLoading;
+use Tarosky\Series\Customizer\TocTitle;
 use Tarosky\Series\Pattern\Singleton;
 use Tarosky\Series\RestApis\SeriesArticles;
 use Tarosky\Series\RestApis\SeriesList;
@@ -27,9 +37,20 @@ class Bootstrap extends Singleton {
 		PostEditor::get_instance();
 		SeriesEditor::get_instance();
 		Setting::get_instance();
+		Rewrite::get_instance();
 		// REST API.
 		SeriesList::get_instance();
 		SeriesArticles::get_instance();
+		// Customizer
+		SeriesIndex::get_instance();
+		PostIndex::get_instance();
+		ScheduledPosts::get_instance();
+		StyleLoading::get_instance();
+		IndexLimit::get_instance();
+		OrderBy::get_instance();
+		Order::get_instance();
+		TocTitle::get_instance();
+		ArchiveLink::get_instance();
 	}
 
 	/**

@@ -6,7 +6,7 @@ set -e
 PREFIX="refs/tags/"
 VERSION=${1#"$PREFIX"}
 
-echo "Building Taro iframe Block v${VERSION}..."
+echo "Building Taro Series v${VERSION}..."
 
 # Install composer.
 composer install --no-dev --prefer-dist

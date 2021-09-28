@@ -2,7 +2,7 @@
 /**
 Plugin Name: Taro Series
 Plugin URI: https://wordpress.org/plugins/taro-series/
-Description: Add serries feature to your WordPress site.
+Description: Add series feature to your WordPress site.
 Author: Tarosky INC.
 Version: nightly
 Author URI: https://tarosky.co.jp/

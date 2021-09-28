@@ -29,7 +29,7 @@ class Setting extends Singleton {
 		add_settings_section( 'taro-series', __( 'Series Setting', 'taro-series' ), function() {
 			printf(
 				'<p class="description">%s</p>',
-				esc_html__( 'In this section, you can define how series works in your site.', 'taro-series' )
+				esc_html__( 'In this section, you can define how series works in your site. Go Customize section to change display setting.', 'taro-series' )
 			);
 		}, 'writing' );
 		// Register fields.

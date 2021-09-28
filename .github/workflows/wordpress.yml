@@ -67,8 +67,6 @@ jobs:
       - name: Check JS & CSS syntax
         run: npm run lint
 
-
-
   release:
     name: Deploy WordPress.org
     needs: [ test, assets ]

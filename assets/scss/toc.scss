@@ -1,0 +1,71 @@
+/*!
+ * TOC style
+ *
+ * @package taro-series
+ * @handle taro-series-toc
+ */
+
+.taro-series-toc {
+	margin: 40px 0;
+
+	&-title {
+		font-size: 18px;
+		text-align: center;
+		font-weight: 700;
+	}
+
+	&-list {
+		margin: 20px 0;
+		padding: 0;
+	}
+
+	&-item {
+		list-style-position: inside;
+		margin: 0;
+		padding: 10px 30px 10px 5px;
+		border-bottom: 1px solid currentColor;
+
+		&:first-child {
+			border-top: 1px solid currentColor;
+		}
+
+		&.current{
+			position: relative;
+			&::before {
+				content: "◁";
+				display: block;
+				position: absolute;
+				right: 10px;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+		}
+	}
+
+	&-link {
+		text-align: center;
+		margin: 20px 0;
+		padding: 5px;
+
+		a {
+			display: inline-block;
+			padding: 5px 10px;
+			font-size: 0.8em;
+			border-radius: 3px;
+			border: 1px solid currentColor;
+
+			&:link,
+			&:visited {
+				text-decoration: none;
+				color: currentColor;
+			}
+
+			&:hover,
+			&:active {
+				text-decoration: none;
+				opacity: .6;
+			}
+		}
+	}
+}
+

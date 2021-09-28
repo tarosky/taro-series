@@ -178,14 +178,15 @@ function taro_series_finish_at( $post = null ) {
  * @return array
  */
 function taro_series_query_args( $series_id, $args = [] ) {
+	$posts_per_page = \Tarosky\Series\Customizer\IndexLimit::posts_per_page();
 	$args = array_merge( [
 		'post_type'           => taro_series_post_types(),
-		'post_status'         => 'publish',
-		'orderby'             => 'date',
-		'order'               => 'ASC',
-		'posts_per_page'      => -1,
+		'post_status'         => \Tarosky\Series\Customizer\ScheduledPosts::post_statuses(),
+		'orderby'             => \Tarosky\Series\Customizer\OrderBy::order_by(),
+		'order'               => \Tarosky\Series\Customizer\Order::order(),
+		'posts_per_page'      => $posts_per_page,
 		'ignore_sticky_posts' => true,
-		'no_found_rows'       => true,
+		'no_found_rows'       => ( 1 > $posts_per_page ),
 		'meta_query'          => [
 			[
 				'key'   => taro_series_meta_key(),
@@ -283,11 +284,58 @@ function taro_series_template_part( $name, $suffix = '', $args = [] ) {
  * @param null|int|WP_Post $post
  */
 function taro_series_the_index( $title = '', $post = null ) {
-	$series    = taro_series_get( $post );
-	$post_name = isset( $series->post_name ) ? $series->post_name : '';
-	$title     = get_the_title( $series );
+	$series       = taro_series_get( $post );
+	$post_name    = isset( $series->post_name ) ? $series->post_name : '';
+	$series_title = get_the_title( $series );
+	if ( ! $title ) {
+		$title = \Tarosky\Series\Customizer\TocTitle::get_title( $series_title );
+	}
+	if ( '%0' === $title ) {
+		$title = '';
+	}
 	taro_series_template_part( 'template-parts/series/list', $post_name, [
-		// translators: %s is series title.
-		'title' => $title ? sprintf( __( 'TOC of "%s"', 'taro-series' ), $title ) : '',
+		'title'      => $title,
+		'link'       => taro_series_link( $series ),
+		'link_label' => \Tarosky\Series\Customizer\ArchiveLink::get_label( $series_title ),
 	] );
+}
+
+/**
+ * Prefix of series archive.
+ *
+ * @return string
+ */
+function taro_series_prefix() {
+	return apply_filters( 'taro_series_archive_prefix', 'series/archive' );
+}
+
+/**
+ * Get series link.
+ *
+ * @param null|int|\WP_Post $post Post object.
+ * @return string
+ */
+function taro_series_link( $post = null ) {
+	$series = taro_series_get( $post );
+	if ( ! $series ) {
+		return '';
+	}
+	if ( get_option( 'rewrite_rules' ) ) {
+		// Rewrite rules on.
+		return home_url( trailingslashit( taro_series_prefix() ) . $series->post_name );
+	} else {
+		// Rewrite rules off.
+		return add_query_arg( [
+			'series_in' => $series->post_name,
+		], home_url() );
+	}
+}
+
+/**
+ * Detect if this is series archive.
+ *
+ * @return bool
+ */
+function taro_is_series_archive() {
+	return (bool) get_query_var( 'series_in' );
 }
