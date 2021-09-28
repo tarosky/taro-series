@@ -11,10 +11,6 @@ const { Spinner, RadioControl, TextControl, Button } = wp.components;
 const { __ } = wp.i18n;
 const { apiFetch } = wp;
 
-const postCaches = {};
-
-
-
 class SeriesRender extends Component {
 
 	constructor(prop) {
@@ -40,7 +36,7 @@ class SeriesRender extends Component {
 		if ( this.fetching ) {
 			return; // Do nothing.
 		}
-		const { postId, postType } = this.props;
+		const { postId } = this.props;
 		this.fetching = true;
 		if ( postId ) {
 			this.setState( {
@@ -77,14 +73,13 @@ class SeriesRender extends Component {
 	render() {
 		const { loading, post } = this.state;
 		const { onChange } = this.props;
-		const objects = [];
 		let link = false;
 		let title = '';
 		if ( post ) {
 			link  = post.edit_link;
 			title = post.title;
 		} else if ( 0 < this.props.postId ) {
-			title = __( 'Loading...', 'taro-series' );
+			title = __( 'Loading…', 'taro-series' );
 		} else {
 			title = __( 'Not Set', 'taro-series' );
 		}
@@ -159,7 +154,7 @@ class SeriesChooser extends Component {
 	}
 
 	render() {
-		const { postId, onChange } = this.props;
+		const { onChange } = this.props;
 		const { loading, posts, s } = this.state;
 		const result = [];
 		if ( loading ) {
@@ -185,7 +180,7 @@ class SeriesChooser extends Component {
 			);
 		} else if ( loading ) {
 			result.push(
-				<p className="description">{ __( 'Loading...', 'taro-series' ) }</p>
+				<p className="description">{ __( 'Loading…', 'taro-series' ) }</p>
 			);
 		} else {
 			result.push(

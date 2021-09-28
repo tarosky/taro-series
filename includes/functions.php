@@ -179,7 +179,7 @@ function taro_series_finish_at( $post = null ) {
  */
 function taro_series_query_args( $series_id, $args = [] ) {
 	$posts_per_page = \Tarosky\Series\Customizer\IndexLimit::posts_per_page();
-	$args = array_merge( [
+	$args           = array_merge( [
 		'post_type'           => taro_series_post_types(),
 		'post_status'         => \Tarosky\Series\Customizer\ScheduledPosts::post_statuses(),
 		'orderby'             => \Tarosky\Series\Customizer\OrderBy::order_by(),

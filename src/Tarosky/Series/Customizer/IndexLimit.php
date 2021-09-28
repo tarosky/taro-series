@@ -24,7 +24,7 @@ class IndexLimit extends CustomizerPattern {
 	 */
 	protected function controller_args() {
 		return array_merge( parent::controller_args(), [
-			'type' => 'number',
+			'type'        => 'number',
 			'label'       => __( 'Max Articles in Index', 'taro-series' ),
 			'description' => __( '0 means all articles. If more than 0, the amount of articles in index will be limited.', 'taro-series' ),
 			'input_attrs' => [

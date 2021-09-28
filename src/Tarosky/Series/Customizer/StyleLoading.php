@@ -24,8 +24,8 @@ class StyleLoading extends CustomizerPattern {
 	 */
 	protected function controller_args() {
 		return array_merge( parent::controller_args(), [
-			'type'        => 'checkbox',
-			'label'       => __( 'Do not load TOC stylesheet', 'taro-series' ),
+			'type'  => 'checkbox',
+			'label' => __( 'Do not load TOC stylesheet', 'taro-series' ),
 		] );
 	}
 

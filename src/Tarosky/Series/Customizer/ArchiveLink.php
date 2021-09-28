@@ -36,6 +36,7 @@ class ArchiveLink extends CustomizerPattern {
 		return array_merge( parent::controller_args(), [
 			'type'        => 'text',
 			'label'       => __( 'Archive Link Label', 'taro-series' ),
+			// translators: %s is a placeholder.
 			'description' => __( 'If you limit the amount of articles in TOC, a link to archive will be displayed. %s will be replaced with series title.', 'taro-series' ),
 			'input_attrs' => [
 				'placeholder' => $this->default_title(),

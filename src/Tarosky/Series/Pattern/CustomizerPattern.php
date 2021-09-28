@@ -32,7 +32,7 @@ abstract class CustomizerPattern extends Singleton {
 	protected function get_setting() {
 		return [
 			'type'      => 'option',
-			'transport' => 'refresh'
+			'transport' => 'refresh',
 		];
 	}
 

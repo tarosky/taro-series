@@ -38,7 +38,7 @@ class Rewrite extends Singleton {
 	 * @param string[] $rules
 	 */
 	public function rewrite_rules( $rules ) {
-		$preg = '^' . ltrim( taro_series_prefix(),'/' ) . '/([^/]+)';
+		$preg = '^' . ltrim( taro_series_prefix(), '/' ) . '/([^/]+)';
 		return array_merge( [
 			$preg . '/page/(\d+)/?' => 'index.php?series_in=$matches[1]&paged=$matches[2]',
 			$preg . '/?'            => 'index.php?series_in=$matches[1]',
@@ -63,7 +63,7 @@ class Rewrite extends Singleton {
 			$series_id = $series->ID;
 		}
 		// Set meta query.
-		$meta_query = $wp_query->get( 'meta_query' ) ?: [];
+		$meta_query   = $wp_query->get( 'meta_query' ) ?: [];
 		$meta_query[] = [
 			'key'   => taro_series_meta_key(),
 			'value' => $series_id,

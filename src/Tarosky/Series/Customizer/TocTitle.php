@@ -36,6 +36,7 @@ class TocTitle extends CustomizerPattern {
 		return array_merge( parent::controller_args(), [
 			'type'        => 'text',
 			'label'       => __( 'Toc Title', 'taro-series' ),
+			// translators: %s is series title.
 			'description' => __( '%s will be replaced with series title. %0 means no TOC title.', 'taro-series' ),
 			'input_attrs' => [
 				'placeholder' => $this->default_title(),

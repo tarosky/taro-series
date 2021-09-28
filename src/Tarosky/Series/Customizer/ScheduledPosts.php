@@ -24,8 +24,8 @@ class ScheduledPosts extends CustomizerPattern {
 	 */
 	protected function controller_args() {
 		return array_merge( parent::controller_args(), [
-			'type'        => 'checkbox',
-			'label'       => __( 'Include scheduled posts', 'taro-series' ),
+			'type'  => 'checkbox',
+			'label' => __( 'Include scheduled posts', 'taro-series' ),
 		] );
 	}
 
@@ -35,7 +35,7 @@ class ScheduledPosts extends CustomizerPattern {
 	 * @return string[]
 	 */
 	public static function post_statuses() {
-		$scheduled = (bool) self::get();
+		$scheduled   = (bool) self::get();
 		$post_status = [ 'publish' ];
 		if ( $scheduled ) {
 			$post_status[] = 'future';

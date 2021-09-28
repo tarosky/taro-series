@@ -24,15 +24,15 @@ class OrderBy extends CustomizerPattern {
 	 */
 	protected function controller_args() {
 		return array_merge( parent::controller_args(), [
-			'type'        => 'select',
-			'label'       => __( 'Order By', 'taro-series' ),
-			'choices'     => [
+			'type'    => 'select',
+			'label'   => __( 'Order By', 'taro-series' ),
+			'choices' => [
 				''           => __( 'Published Date', 'taro-series' ),
 				'menu_order' => __( 'Page Order', 'taro-series' ),
 				'name'       => __( 'Post Slug', 'taro-series' ),
 				'rand'       => __( 'Random', 'taro-series' ),
 			],
-			'default'     => '',
+			'default' => '',
 		] );
 	}
 

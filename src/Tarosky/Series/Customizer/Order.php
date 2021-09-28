@@ -24,13 +24,13 @@ class Order extends CustomizerPattern {
 	 */
 	protected function controller_args() {
 		return array_merge( parent::controller_args(), [
-			'type'        => 'select',
-			'label'       => __( 'Order', 'taro-series' ),
-			'choices'     => [
-				''   => __( 'DESC', 'taro-series' ),
+			'type'    => 'select',
+			'label'   => __( 'Order', 'taro-series' ),
+			'choices' => [
+				''    => __( 'DESC', 'taro-series' ),
 				'ASC' => __( 'ASC', 'taro-series' ),
 			],
-			'default'     => '',
+			'default' => '',
 		] );
 	}
 

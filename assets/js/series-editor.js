@@ -7,7 +7,7 @@
  */
 
 const { Component, render } = wp.element;
-const { __ } = wp.i18n;
+const { __, sprintf } = wp.i18n;
 const { Spinner, Button, Modal, TextControl } = wp.components;
 const { apiFetch } = wp;
 const { dispatch } = wp.data;
@@ -108,7 +108,7 @@ class Articles extends Component {
 					loading: false,
 					posts: res.posts,
 				} );
-			} ).catch( ( res ) => {
+			} ).catch( () => {
 				this.setState( {
 					loading: false,
 					posts: [],
@@ -125,7 +125,6 @@ class Articles extends Component {
 				path: `taro-series/v1/series/${this.props.seriesId}?s=${this.state.term}`,
 				method: 'get',
 			} ).then( ( res ) => {
-				console.log( res );
 				this.setState( {
 					loading: false,
 					resultCount: res.total,
@@ -149,9 +148,8 @@ class Articles extends Component {
 		posts.sort( ( a, b ) => {
 			if ( a.date === b.date ) {
 				return 0;
-			} else {
-				return a.date < b.date ? -1 : 1;
 			}
+			return a.date < b.date ? -1 : 1;
 		} )
 		this.setState( {
 			posts
@@ -163,7 +161,7 @@ class Articles extends Component {
 			apiFetch( {
 				path: `taro-series/v1/series/${this.props.seriesId}?post_id=${postId}`,
 				method: 'delete',
-			} ).then( ( response ) => {
+			} ).then( () => {
 				// Successfully removed.
 				this.setState( {
 					loading: false,
@@ -200,7 +198,7 @@ class Articles extends Component {
 				{ loading && (
 					<>
 						<Spinner />
-						<p className="description">{ __( 'Loading...', 'taro-series' ) }</p>
+						<p className="description">{ __( 'Loading…', 'taro-series' ) }</p>
 					</>
 				) }
 
@@ -246,7 +244,7 @@ class Articles extends Component {
 						{ loading && <Spinner /> }
 						{ ( 0 < results.length ) ? (
 							<>
-								<p>{ sprintf( __( 'Found posts: %d', 'taro-series' ), resultCount ) }</p>
+								<p>{ /* translators: %d is post count. */ sprintf( __( 'Found posts: %d', 'taro-series' ), resultCount ) }</p>
 								<ol style={ { borderTop: '1px solid #eee' } }>
 									{ results.map( ( post ) => {
 										return (

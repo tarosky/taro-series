@@ -31,9 +31,9 @@ class PostIndex extends CustomizerPattern {
 	 */
 	protected function controller_args() {
 		return array_merge( parent::controller_args(), [
-			'label'           => __( 'Display TOC in Article Pages', 'taro-series' ),
-			'type'            => 'checkbox',
-			'description'     => __( 'If checked, TOC of the series will be displayed in each articles in series.', 'taro-series' ),
+			'label'       => __( 'Display TOC in Article Pages', 'taro-series' ),
+			'type'        => 'checkbox',
+			'description' => __( 'If checked, TOC of the series will be displayed in each articles in series.', 'taro-series' ),
 		] );
 	}
 
