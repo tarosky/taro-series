@@ -72,6 +72,7 @@ class Rewrite extends Singleton {
 			'key'   => taro_series_meta_key(),
 			'value' => $series_id,
 		];
+		// Change conditions.
 		$wp_query->is_archive = true;
 		$wp_query->is_home    = false;
 		$wp_query->set( 'meta_query', $meta_query );
@@ -132,6 +133,7 @@ class Rewrite extends Singleton {
 	protected function title( $series ) {
 		$series = get_post( $series );
 		if ( $series ) {
+			// translators: %s is series title.
 			$title = apply_filters( 'taro_series_archive_title', sprintf( __( 'Articles in %s', 'taro-series' ), get_the_title( $series ) ), $series );
 		} else {
 			$title = __( 'Series Archive', 'taro-series' );
