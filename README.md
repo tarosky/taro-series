@@ -35,6 +35,21 @@ template-parts
 
 Copy the template in plugin's directoy and customize.
 
+#### Archive Template
+
+Archive page template of articles in series will be searched in your theme's directory and loaded par the hierarchy blow:
+
+```
+archive-in-series-{series-slug}.php
+archive-in-series.php
+archive.php
+index.php
+```
+
+#### Hooks
+
+Many hooks are also available. Search your plugin direcoty with `'taro_series_'` and you can find them easily :)
+
 ## Installation
 
 ### From Plugin Repository
