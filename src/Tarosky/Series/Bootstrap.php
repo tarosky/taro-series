@@ -32,7 +32,9 @@ class Bootstrap extends Singleton {
 	 * @inheritDoc
 	 */
 	protected function init() {
+		// Post type.
 		add_action( 'init', [ $this, 'register_series_type' ], 20 );
+		// Assets.
 		add_action( 'init', [ $this, 'register_script' ], 21 );
 		// Controllers.
 		PostEditor::get_instance();

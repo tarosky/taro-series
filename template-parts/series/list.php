@@ -37,7 +37,7 @@ if ( ! $query || ! $query->have_posts() ) {
 	</ol>
 	<?php if ( $query->found_posts > $query->post_count && $args['link'] ) : ?>
 	<p class="taro-series-toc-link">
-		<a class="taro-series-toc-link-button" href="<?php echo esc_attr( $args['link'] ); ?>">
+		<a class="taro-series-toc-link-button" href="<?php echo esc_url( $args['link'] ); ?>">
 			<?php echo esc_html( $args['link_label'] ); ?>
 		</a>
 	</p>

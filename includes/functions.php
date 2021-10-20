@@ -289,11 +289,10 @@ function taro_series_the_index( $title = '', $post = null ) {
 	$series_title = get_the_title( $series );
 	if ( ! $title ) {
 		$title = \Tarosky\Series\Customizer\TocTitle::get_title( $series_title );
+	} elseif ( '%0' === $title )  {
+		$title = '';
 	} else {
 		$title = str_replace( '%s', get_the_title( $series ), $title );
-	}
-	if ( '%0' === $title ) {
-		$title = '';
 	}
 	taro_series_template_part( 'template-parts/series/list', $post_name, [
 		'title'      => $title,
@@ -341,4 +340,21 @@ function taro_series_link( $post = null ) {
  */
 function taro_is_series_archive() {
 	return (bool) get_query_var( 'series_in' );
+}
+
+/**
+ * Get series posts.
+ *
+ * @param array $args Optional arguments.
+ * @return WP_Post[]
+ */
+function taro_series_list( $args = [] ) {
+	$query  = new \WP_Query( array_merge( [
+		'post_type'      => taro_series_parent_post_type(),
+		'post_status'    => 'publish',
+		'posts_per_page' => -1,
+		'order'          => 'ASC',
+		'orderby'        => 'name',
+	], $args ) );
+	return $query->posts;
 }

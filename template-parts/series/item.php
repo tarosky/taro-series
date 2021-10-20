@@ -19,7 +19,7 @@
 	<span class="taro-series-list-link scheduled">
 		<?php
 		// translators: %s is published date.
-		printf( __( 'Coming Soon(%s)', 'taro-series' ), mysql2date( get_option( 'date_format' ), get_post()->post_date ) );
+		printf( esc_html__( 'Coming Soon(%s)', 'taro-series' ), mysql2date( get_option( 'date_format' ), get_post()->post_date ) );
 		?>
 	</span>
 	<?php endif; ?>

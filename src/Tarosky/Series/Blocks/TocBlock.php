@@ -109,14 +109,7 @@ HTML;
 			'value' => 0,
 			'label' => __( 'Current Series', 'taro-series' ),
 		] ];
-		$query  = new \WP_Query( [
-			'post_type'      => taro_series_parent_post_type(),
-			'post_status'    => 'publish',
-			'posts_per_page' => -1,
-			'order'          => 'ASC',
-			'orderby'        => 'name',
-		] );
-		foreach ( $query->posts as $post ) {
+		foreach ( taro_series_list() as $post ) {
 			$series[] = [
 				'value' => $post->ID,
 				'label' => get_the_title( $post ),

@@ -17,8 +17,7 @@ This plugin will..
 
 1. Create a custom post type "Series".
 2. Add meta box to specified post types to be a part of the series.
-3. Display TOC on post. You can change the settings in Theme Customizer.
-4. Add "Series Archive".
+3. Display TOC on post. You can change the settings in Theme Customizer or use "Series TOC" block.
 
 ### Customization
 
@@ -30,14 +29,14 @@ To override look and feel, put template in your themes directory.
 template-parts
 - series
   - item.php // Each item in TOC.
-  - list.php // TOC template.
+  - list.php // TOC list which include item.php repeatedly.
 ```
 
 Copy the template in plugin's directoy and customize.
 
 #### Archive Template
 
-Archive page template of articles in series will be searched in your theme's directory and loaded par the hierarchy blow:
+Archive page template of articles in series will be searched in your theme's directory and loaded per the hierarchy below:
 
 ```
 archive-in-series-{series-slug}.php
@@ -49,6 +48,10 @@ index.php
 #### Hooks
 
 Many hooks are also available. Search your plugin direcoty with `'taro_series_'` and you can find them easily :)
+
+#### Functions
+
+See `inludes/functions.php` and you can find useful template tags and functions.
 
 ## Installation
 
