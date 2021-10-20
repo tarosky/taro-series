@@ -43,7 +43,7 @@ class TocBlock extends DynamicBlockPattern {
 				'type'    => 'integer',
 				'default' => 0,
 			],
-			'title' => [
+			'title'     => [
 				'type'    => 'string',
 				'default' => '',
 			],
@@ -105,10 +105,12 @@ HTML;
 	 * @return array
 	 */
 	protected function block_variable_filter( $vars ) {
-		$series = [ [
-			'value' => 0,
-			'label' => __( 'Current Series', 'taro-series' ),
-		] ];
+		$series = [
+			[
+				'value' => 0,
+				'label' => __( 'Current Series', 'taro-series' ),
+			],
+		];
 		foreach ( taro_series_list() as $post ) {
 			$series[] = [
 				'value' => $post->ID,

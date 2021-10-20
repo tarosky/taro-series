@@ -12,7 +12,7 @@
 const { registerBlockType } = wp.blocks;
 const { __ } = wp.i18n;
 const { InspectorControls } = wp.blockEditor;
-const { PanelBody, TextControl, SelectControl, Placeholder } = wp.components;
+const { PanelBody, TextControl, SelectControl } = wp.components;
 const { serverSideRender: ServerSideRender } = wp;
 
 const { name, series } = TaroSeriesTocVars;

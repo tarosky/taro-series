@@ -55,7 +55,7 @@ abstract class DynamicBlockPattern extends BlockPattern {
 		$name[] = 'Vars';
 
 		wp_localize_script( $this->editor_script(), implode( '', $name ), $this->block_variable_filter( [
-			'name' => $this->block_name(),
+			'name'       => $this->block_name(),
 			'attributes' => $this->get_block_attributes(),
 		] ) );
 	}
