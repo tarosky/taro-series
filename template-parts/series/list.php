@@ -7,17 +7,20 @@
  * @var array $args
  */
 
-$query = taro_series_index_query();
+$args = wp_parse_args( $args, [
+	'series'     => null,
+	'title'      => '',
+	'link'       => '',
+	'link_label' => '',
+] );
+
+// Check series exists.
+$query = taro_series_index_query( $args['series'] );
 if ( ! $query || ! $query->have_posts() ) {
 	return;
 }
 // Enqueue style if OK.
 \Tarosky\Series\Customizer\StyleLoading::load_style();
-$args = wp_parse_args( $args, [
-	'title'      => '',
-	'link'       => '',
-	'link_label' => '',
-] );
 ?>
 <nav class="taro-series-toc">
 	<?php if ( $args['title'] ) : ?>

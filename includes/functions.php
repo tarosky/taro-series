@@ -289,12 +289,15 @@ function taro_series_the_index( $title = '', $post = null ) {
 	$series_title = get_the_title( $series );
 	if ( ! $title ) {
 		$title = \Tarosky\Series\Customizer\TocTitle::get_title( $series_title );
+	} else {
+		$title = str_replace( '%s', get_the_title( $series ), $title );
 	}
 	if ( '%0' === $title ) {
 		$title = '';
 	}
 	taro_series_template_part( 'template-parts/series/list', $post_name, [
 		'title'      => $title,
+		'series'     => $series,
 		'link'       => taro_series_link( $series ),
 		'link_label' => \Tarosky\Series\Customizer\ArchiveLink::get_label( $series_title ),
 	] );

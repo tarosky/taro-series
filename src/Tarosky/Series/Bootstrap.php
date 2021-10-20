@@ -3,6 +3,7 @@
 namespace Tarosky\Series;
 
 
+use Tarosky\Series\Blocks\TocBlock;
 use Tarosky\Series\Controller\PostEditor;
 use Tarosky\Series\Controller\Rewrite;
 use Tarosky\Series\Controller\SeriesEditor;
@@ -51,6 +52,8 @@ class Bootstrap extends Singleton {
 		Order::get_instance();
 		TocTitle::get_instance();
 		ArchiveLink::get_instance();
+		// Block
+		TocBlock::get_instance();
 	}
 
 	/**
