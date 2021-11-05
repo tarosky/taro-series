@@ -75,6 +75,9 @@ Create a new [issue](https://github.com/tarosky/taro-series/issues) or send [pul
 
 ## Changelog
 
+### 1.1.2
+
+* Fix bug in articles count.
 
 ### 1.0.0
 

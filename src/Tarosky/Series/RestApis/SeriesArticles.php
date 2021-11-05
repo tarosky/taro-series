@@ -108,7 +108,8 @@ class SeriesArticles extends RestApi {
 			unset( $args['no_found_rows'] );
 		} else {
 			$args = taro_series_query_args( $series, [
-				'post_status' => 'any',
+				'post_status'    => 'any',
+				'posts_per_page' => -1,
 			] );
 		}
 		$query = new \WP_Query( $args );

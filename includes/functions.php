@@ -210,15 +210,18 @@ function taro_series_query( $series_id, $args = [] ) {
 }
 
 /**
- * @param $series_id
+ * Get the amount of articles in the series.
+ *
+ * @param int    $series_id
  * @param string $status
  *
  * @return int
  */
 function taro_series_count( $series_id, $status = 'publish' ) {
 	$query = taro_series_query( $series_id, [
-		'post_status' => $status,
-		'fields'      => 'ids',
+		'post_status'    => $status,
+		'fields'         => 'ids',
+		'posts_per_page' => -1,
 	] );
 	return count( $query->posts );
 }
