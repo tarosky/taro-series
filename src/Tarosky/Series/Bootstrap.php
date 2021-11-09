@@ -95,6 +95,10 @@ class Bootstrap extends Singleton {
 					break;
 				case 'js':
 					wp_register_script( $asset['handle'], taro_series_url() . '/' . $asset['path'], $asset['deps'], $asset['hash'], $asset['footer'] );
+					// If requires translations, register.
+					if ( in_array( 'wp-i18n', $asset['deps'], true ) ) {
+						wp_set_script_translations( $asset['handle'], 'taro-series' );
+					}
 					break;
 			}
 		}
