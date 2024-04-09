@@ -12,54 +12,20 @@ on:
 
 jobs:
   test:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system: [ ubuntu-18.04 ]  # OS. ubuntu-18.04 is also available.
-        php: [ '5.6', '7.2', '7.4' ] # PHP versions to check.
-        wp: [ 'latest', '5.4' ]      # WordPress version to check.
-    services:
-      mysql:
-        image: mysql:5.7
-        options: --health-cmd "mysqladmin ping --host 127.0.0.1 --port 3306" --health-interval 20s --health-timeout 10s --health-retries 10
-        ports:
-          - 3306/tcp
-        env:
-          MYSQL_ROOT_PASSWORD: root
-    name: WordPress ${{ matrix.wp }} in PHP ${{ matrix.php }} UnitTest
-    steps:
-      - uses: actions/checkout@master
-
-      - name: Setup PHP
-        uses: nanasess/setup-php@master
-        with:
-          php-version: ${{ matrix.php }}
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
-
-      - name: Start MySQL
-        run: sudo systemctl start mysql
-
-      - name: Install WordPress
-        run: bash bin/install-wp-tests.sh wordpress root root 127.0.0.1:3306 ${{ matrix.wp }}
-
-      - name: Check PHP syntax
-        run: composer test
+    uses: tarosky/workflows/.github/workflows/phpcs.yml@main
+    with:
+      version: 7.2
 
   assets:
     name: Assets Test
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@main
 
       - name: Install Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Install NPM Packages
         run: npm install
@@ -67,27 +33,45 @@ jobs:
       - name: Check JS & CSS syntax
         run: npm run lint
 
+  phplint:
+    uses: tarosky/workflows/.github/workflows/phplint.yml@main
+
   release:
     name: Deploy WordPress.org
-    needs: [ test, assets ]
+    needs: [ test, assets, phplint ]
     if: contains(github.ref, 'tags/')
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@main
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: 5.6
+          php-version: 7.2
+          tools: composer
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: '12'
+          node-version: '16'
 
       - name: Build Plugin
-        run: bash bin/build.sh ${{ github.ref }}
+        run: |
+          composer install --prefer-dist --no-dev
+          npm install
+          npm run package
+
+      - name: Generate readme.txt
+        uses: tarosky/workflows/actions/wp-readme@main
+
+      - name: Versioning
+        uses: tarosky/workflows/actions/versioning@main
+        with:
+          version: ${{ github.ref }}
+          files: readme.txt,taro-series.php
 
       - name: Deploy to WordPress Directory
         id: deploy
