@@ -23,7 +23,7 @@
 		"@babel/plugin-transform-react-jsx": "^7.0.0",
 		"@babel/preset-env": "^7.1.0",
 		"@kunoichi/grab-deps": "^1.2.2",
-		"@wordpress/env": "^4.0",
+		"@wordpress/env": "^9.7.0",
 		"@wordpress/eslint-plugin": "^9.0",
 		"babel-eslint": "^10.0.1",
 		"babel-loader": "^8.0.5",
@@ -35,15 +35,18 @@
 		"gulp-notify": "^3.2.0",
 		"gulp-plumber": "^1.2.0",
 		"gulp-rename": "^1.4.0",
-		"gulp-sass": "^4.0.2",
+		"gulp-sass": "5.0",
 		"gulp-sass-glob": "^1.0.9",
 		"gulp-sourcemaps": "^3.0",
 		"gulp-stylelint": "^13.0.0",
+		"sass": "^1.74.1",
 		"stylelint": "^13.13.1",
 		"stylelint-config-wordpress": "^17.0.0",
 		"vinyl-named": "^1.1.0",
 		"webpack": "^5.3",
 		"webpack-stream": "^6.1"
 	},
-	"dependencies": {}
+	"volta": {
+		"node": "16.20.2"
+	}
 }

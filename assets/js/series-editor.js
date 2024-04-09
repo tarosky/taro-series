@@ -18,7 +18,7 @@ const message = ( content, status ) => {
 		isDismissible: true,
 		explicitDismiss: false,
 	} );
-}
+};
 
 const listStyle = {
 	borderBottom: '1px solid #ddd',
@@ -36,7 +36,6 @@ const labelStyle = {
 const linkStyle = { marginRight: '10px' };
 
 class SearchItem extends Component {
-
 	constructor( props ) {
 		super( props );
 		this.state = {
@@ -47,11 +46,11 @@ class SearchItem extends Component {
 	add( post ) {
 		this.setState( { loading: true }, () => {
 			apiFetch( {
-				path: `taro-series/v1/series/${this.props.seriesId}`,
+				path: `taro-series/v1/series/${ this.props.seriesId }`,
 				method: 'post',
 				data: {
-					post_id: post.id
-				}
+					post_id: post.id,
+				},
 			} ).then( () => {
 				this.props.onAdd( post );
 			} ).catch( ( res ) => {
@@ -83,7 +82,6 @@ class SearchItem extends Component {
 }
 
 class Articles extends Component {
-
 	constructor( props ) {
 		super( props );
 		this.state = {
@@ -101,7 +99,7 @@ class Articles extends Component {
 			loading: true,
 		}, () => {
 			apiFetch( {
-				path: `taro-series/v1/series/${this.props.seriesId}`,
+				path: `taro-series/v1/series/${ this.props.seriesId }`,
 				method: 'get',
 			} ).then( ( res ) => {
 				this.setState( {
@@ -122,7 +120,7 @@ class Articles extends Component {
 			loading: true,
 		}, () => {
 			apiFetch( {
-				path: `taro-series/v1/series/${this.props.seriesId}?s=${this.state.term}`,
+				path: `taro-series/v1/series/${ this.props.seriesId }?s=${ this.state.term }`,
 				method: 'get',
 			} ).then( ( res ) => {
 				this.setState( {
@@ -150,16 +148,16 @@ class Articles extends Component {
 				return 0;
 			}
 			return a.date < b.date ? -1 : 1;
-		} )
+		} );
 		this.setState( {
-			posts
+			posts,
 		} );
 	}
 
 	remove( postId ) {
 		this.setState( { loading: false }, () => {
 			apiFetch( {
-				path: `taro-series/v1/series/${this.props.seriesId}?post_id=${postId}`,
+				path: `taro-series/v1/series/${ this.props.seriesId }?post_id=${ postId }`,
 				method: 'delete',
 			} ).then( () => {
 				// Successfully removed.
@@ -167,7 +165,7 @@ class Articles extends Component {
 					loading: false,
 					posts: this.state.posts.filter( ( post ) => {
 						return post.id !== postId;
-					} )
+					} ),
 				}, () => {
 					// translators: %d is post id.
 					message( sprintf( __( '#%d is removed from the articles of this series.', 'taro-series' ), postId ), 'success' );
@@ -188,7 +186,7 @@ class Articles extends Component {
 			results: [],
 			resultCount: 0,
 			term: '',
-		} )
+		} );
 	}
 
 	render() {
@@ -206,12 +204,12 @@ class Articles extends Component {
 					<ol className="taro-series-list" style={ { margin: '0 0 20px' } }>
 						{ posts.map( ( post ) => {
 							return (
-								<li style={ listStyle } className="taro-series-item"  key={ post.id }>
+								<li style={ listStyle } className="taro-series-item" key={ post.id }>
 									<p className="taro-series-item-title">
 										<strong>{ post.title }</strong>
-										<small style={ labelStyle }>{post.statusLabel}</small>
+										<small style={ labelStyle }>{ post.statusLabel }</small>
 										<small style={ labelStyle }>{ post.postTypeLabel }</small>
-										<small style={ labelStyle }>{post.dateFormatted}</small>
+										<small style={ labelStyle }>{ post.dateFormatted }</small>
 									</p>
 									<p>
 										<a style={ linkStyle } className="components-button is-small is-tertiary" href={ post.editLink } target="_blank" rel="noopener noreferrer">{ __( 'Edit', 'taro-series' ) }</a>
@@ -248,7 +246,7 @@ class Articles extends Component {
 								<ol style={ { borderTop: '1px solid #eee' } }>
 									{ results.map( ( post ) => {
 										return (
-											<SearchItem post={ post } key={ `search-${post.id}` } seriesId={ this.props.seriesId } onAdd={ ( p ) => this.add( p ) } />
+											<SearchItem post={ post } key={ `search-${ post.id }` } seriesId={ this.props.seriesId } onAdd={ ( p ) => this.add( p ) } />
 										);
 									} ) }
 								</ol>
