@@ -56,6 +56,8 @@ class Bootstrap extends Singleton {
 		ArchiveLink::get_instance();
 		// Block
 		TocBlock::get_instance();
+		// Shortcode
+		add_shortcode( 'taro_series', [ $this, 'do_shortcode' ] );
 	}
 
 	/**
@@ -102,5 +104,40 @@ class Bootstrap extends Singleton {
 					break;
 			}
 		}
+	}
+
+	/**
+	 * Render shortcode for debugging.
+	 *
+	 * @param array  $attrs    Shortcode attributes.
+	 * @param string $contents Shortcode contents.
+	 *
+	 * @return string
+	 */
+	public function do_shortcode( $attrs = [], $contents = '' ) {
+		$attrs = shortcode_atts( [
+			'order'          => 'DESC',
+			'posts_per_page' => 10,
+		], $attrs, 'taro_series' );
+		$query_args = array_merge( [
+			'post_type'   => taro_series_parent_post_type(),
+			'post_status' => 'publish',
+			'orderby'     => 'series-updated',
+		], $attrs );
+		$query = new \WP_Query( $query_args );
+		if ( ! $query->have_posts() ) {
+			return '';
+		}
+		ob_start();
+		echo '<ul>';
+		foreach ( $query->posts as $post ) {
+			printf(
+				'<li><a href="%s">%s</a></li>',
+				get_permalink( $post ),
+				get_the_title( $post )
+			);
+		}
+		echo '</ul>';
+		return ob_get_clean();
 	}
 }

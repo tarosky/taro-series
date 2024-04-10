@@ -18,7 +18,10 @@ class Rewrite extends Singleton {
 	protected function init() {
 		add_filter( 'query_vars', [ $this, 'query_vars' ] );
 		add_filter( 'rewrite_rules_array', [ $this, 'rewrite_rules' ] );
-		add_action( 'pre_get_posts', [ $this, 'pre_get_posts' ] );
+		add_action( 'pre_get_posts', [ $this, 'query_in_series' ] );
+		add_action( 'pre_get_posts', [ $this, 'query_series_top' ] );
+		add_filter( 'posts_join', [ $this, 'posts_join' ], 10, 2 );
+		add_filter( 'posts_orderby', [ $this, 'posts_orderby' ], 10, 2 );
 		add_filter( 'get_the_archive_title', [ $this, 'archive_title' ] );
 		add_filter( 'index_template_hierarchy', [ $this, 'template_hierarchy' ] );
 		add_filter( 'archive_template_hierarchy', [ $this, 'template_hierarchy' ] );
@@ -32,7 +35,7 @@ class Rewrite extends Singleton {
 	 * @return string[]
 	 */
 	public function query_vars( $vars ) {
-		$vars[] = 'series_in';
+		$vars[] = 'series_in'; // Posts in specific series.
 		return $vars;
 	}
 
@@ -54,7 +57,7 @@ class Rewrite extends Singleton {
 	 *
 	 * @param \WP_Query $wp_query Query object.
 	 */
-	public function pre_get_posts( $wp_query ) {
+	public function query_in_series( $wp_query ) {
 		$series_in = $wp_query->get( 'series_in' );
 		if ( ! $series_in ) {
 			return;
@@ -152,5 +155,82 @@ class Rewrite extends Singleton {
 			$slug = get_query_var( 'series_in' );
 		}
 		return get_page_by_path( $slug, OBJECT, taro_series_parent_post_type() );
+	}
+
+	/**
+	 * If this is series list, change query.
+	 *
+	 * @param \WP_Query $wp_query
+	 * @return void
+	 */
+	public function query_series_top( $wp_query ) {
+		if ( ! $this->is_series_update( $wp_query ) ) {
+			return;
+		}
+		// Force post type to be series.
+		$wp_query->set( 'post_type', taro_series_parent_post_type() );
+		// Order should be asc or desc.
+		if ( 'ASC' !== strtoupper( $wp_query->get( 'order' ) ) ) {
+			$wp_query->set( 'order', 'DESC' );
+		}
+	}
+
+	/**
+	 * @param $join
+	 * @param \WP_Query $wp_query
+	 *
+	 * @return mixed|string
+	 */
+	public function posts_join( $join, $wp_query ) {
+		if ( $this->is_series_update( $wp_query ) ) {
+			/* @var \wpdb $wpdb */
+			global $wpdb;
+			$post_types = implode( ', ', array_map( function( $post_type ) use ( $wpdb ) {
+				return $wpdb->prepare( '%s', $post_type );
+			}, taro_series_post_types() ) );
+			$func = ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? 'MIN' : 'MAX';
+			$sql  = <<<SQL
+				INNER JOIN (
+					SELECT CAST( pm.meta_value AS INT ) AS series_id , {$func}( p.post_date ) as last_updated
+					FROM {$wpdb->posts} AS p
+					LEFT JOIN {$wpdb->postmeta} AS pm
+					ON pm.meta_key = %s AND pm.post_id = p.ID
+					WHERE p.post_type IN ({$post_types})
+					  AND p.post_status = 'publish'
+					  AND pm.meta_value IS NOT NULL
+					GROUP BY pm.meta_value
+				) AS taro_series ON taro_series.series_id = {$wpdb->posts}.ID
+SQL;
+			$sql  = $wpdb->prepare( $sql, taro_series_meta_key() );
+			$join .= $sql;
+		}
+		return $join;
+	}
+
+	/**
+	 * Customize order by query.
+	 *
+	 * @param string $orderby
+	 * @param \WP_Query $wp_query
+	 *
+	 * @return mixed
+	 */
+	public function posts_orderby( $orderby, $wp_query ) {
+		if ( $this->is_series_update( $wp_query ) ) {
+			/* @var \wpdb $wpdb */
+			global $wpdb;
+			$orderby = sprintf( 'taro_series.last_updated %s', ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ? 'ASC' : 'DESC' ) );
+		}
+		return $orderby;
+	}
+
+	/**
+	 * Detect if query is series update list.
+	 *
+	 * @param \WP_Query $wp_query
+	 * @return bool
+	 */
+	public function is_series_update( $wp_query ) {
+		return 'series-updated' === $wp_query->get( 'orderby' );
 	}
 }
