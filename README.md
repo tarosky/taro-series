@@ -75,6 +75,12 @@ Create a new [issue](https://github.com/tarosky/taro-series/issues) or send [pul
 
 ## Changelog
 
+### 2.0.0
+
+* Add WP_Query orderby parameter `series-updated`.
+* Bump minimum PHP requiremtns to PHP 7.2 and over.
+* Bump minimum WordPress version to 5.9.
+
 ### 1.1.2
 
 * Fix bug in articles count.
