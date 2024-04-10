@@ -12,9 +12,8 @@ const { __ } = wp.i18n;
 const { apiFetch } = wp;
 
 class SeriesRender extends Component {
-
-	constructor(prop) {
-		super(prop);
+	constructor( prop ) {
+		super( prop );
 		this.state = {
 			loading: false,
 			post: null,
@@ -43,11 +42,11 @@ class SeriesRender extends Component {
 				loading: true,
 			}, () => {
 				apiFetch( {
-					path: `taro-series/v1/available/${this.props.postType}?p=${postId}`,
+					path: `taro-series/v1/available/${ this.props.postType }?p=${ postId }`,
 				} ).then( ( res ) => {
 					this.setState( {
 						loading: false,
-						post: res[0],
+						post: res[ 0 ],
 					}, () => {
 						this.fetching = false;
 					} );
@@ -59,7 +58,7 @@ class SeriesRender extends Component {
 						this.fetching = false;
 					} );
 				} );
-			});
+			} );
 		} else {
 			this.setState( {
 				post: null,
@@ -76,7 +75,7 @@ class SeriesRender extends Component {
 		let link = false;
 		let title = '';
 		if ( post ) {
-			link  = post.edit_link;
+			link = post.edit_link;
 			title = post.title;
 		} else if ( 0 < this.props.postId ) {
 			title = __( 'Loading…', 'taro-series' );
@@ -100,7 +99,7 @@ class SeriesRender extends Component {
 							<a style={ style } href={ link } target="_blank" rel="noopener noreferrer">{ title }</a><br />
 							<Button isSmall isDestructive onClick={ () => {
 								onChange( 0 );
-							}}>{ __( 'Leave Out', 'taro-series' ) }</Button>
+							} }>{ __( 'Leave Out', 'taro-series' ) }</Button>
 						</>
 					) : (
 						<span style={ style } className="taro-series-link taro-series-link-invalid">{ title }</span>
@@ -112,9 +111,8 @@ class SeriesRender extends Component {
 }
 
 class SeriesChooser extends Component {
-
-	constructor(props) {
-		super(props);
+	constructor( props ) {
+		super( props );
 		this.state = {
 			loading: false,
 			posts: [],
@@ -138,7 +136,7 @@ class SeriesChooser extends Component {
 	fetch() {
 		this.setState( { loading: true }, () => {
 			apiFetch( {
-				path: `taro-series/v1/available/${this.props.postType}?s=${this.state.s}`,
+				path: `taro-series/v1/available/${ this.props.postType }?s=${ this.state.s }`,
 			} ).then( ( res ) => {
 				this.setState( {
 					loading: false,
@@ -174,7 +172,7 @@ class SeriesChooser extends Component {
 					value: parseInt( p.id, 10 ),
 					label: p.title,
 				} );
-			} )
+			} );
 			result.push(
 				<RadioControl label={ __( 'Select Series assigned to', 'taro-series' ) } selected={ currentValue } onChange={ onChange } options={ options } />
 			);
@@ -201,9 +199,8 @@ class SeriesChooser extends Component {
 }
 
 class SeriesSelector extends Component {
-
-	constructor(props) {
-		super(props);
+	constructor( props ) {
+		super( props );
 		this.state = {
 			postId: parseInt( props.postId, 10 ),
 		};
@@ -230,5 +227,5 @@ class SeriesSelector extends Component {
 // If meta box exists.
 const metaBox = document.getElementById( 'taro-series-selector' );
 if ( metaBox ) {
-	render( <SeriesSelector postId={ metaBox.dataset.postId } postType={ metaBox.dataset.postType} />, metaBox );
+	render( <SeriesSelector postId={ metaBox.dataset.postId } postType={ metaBox.dataset.postType } />, metaBox );
 }

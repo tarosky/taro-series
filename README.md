@@ -2,9 +2,9 @@
 
 Tags: series, posts, news  
 Contributors: tarosky, Takahashi_Fumiki  
-Tested up to: 5.8  
-Requires at least: 5.4  
-Requires PHP: 5.6  
+Tested up to: 6.5  
+Requires at least: 5.9  
+Requires PHP: 7.2  
 Stable Tag: nightly  
 License: GPLv3 or later  
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -74,6 +74,12 @@ Please create new ticket on support forum.
 Create a new [issue](https://github.com/tarosky/taro-series/issues) or send [pull requests](https://github.com/tarosky/taro-series/pulls).
 
 ## Changelog
+
+### 2.0.0
+
+* Add WP_Query orderby parameter `series-updated`.
+* Bump minimum PHP requiremtns to PHP 7.2 and over.
+* Bump minimum WordPress version to 5.9.
 
 ### 1.1.2
 

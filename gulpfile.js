@@ -5,6 +5,7 @@ const webpack = require( 'webpack-stream' );
 const webpackBundle = require( 'webpack' );
 const named = require( 'vinyl-named' );
 const { dumpSetting } = require('@kunoichi/grab-deps');
+const sass = require( 'gulp-sass' )( require( 'sass' ) );
 
 let plumber = true;
 
@@ -17,7 +18,7 @@ gulp.task( 'sass', function () {
 		} ) )
 		.pipe( $.sassGlob() )
 		.pipe( $.sourcemaps.init() )
-		.pipe( $.sass( {
+		.pipe( sass( {
 			errLogToConsole: true,
 			outputStyle: 'compressed',
 			sourceComments: false,
