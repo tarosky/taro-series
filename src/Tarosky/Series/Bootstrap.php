@@ -115,7 +115,7 @@ class Bootstrap extends Singleton {
 	 * @return string
 	 */
 	public function do_shortcode( $attrs = [], $contents = '' ) {
-		$attrs = shortcode_atts( [
+		$attrs      = shortcode_atts( [
 			'order'          => 'DESC',
 			'posts_per_page' => 10,
 		], $attrs, 'taro_series' );
@@ -124,7 +124,7 @@ class Bootstrap extends Singleton {
 			'post_status' => 'publish',
 			'orderby'     => 'series-updated',
 		], $attrs );
-		$query = new \WP_Query( $query_args );
+		$query      = new \WP_Query( $query_args );
 		if ( ! $query->have_posts() ) {
 			return '';
 		}

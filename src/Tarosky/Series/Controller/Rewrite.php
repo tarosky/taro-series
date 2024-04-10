@@ -188,8 +188,8 @@ class Rewrite extends Singleton {
 			$post_types = implode( ', ', array_map( function( $post_type ) use ( $wpdb ) {
 				return $wpdb->prepare( '%s', $post_type );
 			}, taro_series_post_types() ) );
-			$func = ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? 'MIN' : 'MAX';
-			$sql  = <<<SQL
+			$func       = ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? 'MIN' : 'MAX';
+			$sql        = <<<SQL
 				INNER JOIN (
 					SELECT CAST( pm.meta_value AS INT ) AS series_id , {$func}( p.post_date ) as last_updated
 					FROM {$wpdb->posts} AS p
@@ -201,7 +201,8 @@ class Rewrite extends Singleton {
 					GROUP BY pm.meta_value
 				) AS taro_series ON taro_series.series_id = {$wpdb->posts}.ID
 SQL;
-			$sql  = $wpdb->prepare( $sql, taro_series_meta_key() );
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$sql   = $wpdb->prepare( $sql, taro_series_meta_key() );
 			$join .= $sql;
 		}
 		return $join;
