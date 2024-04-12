@@ -36,6 +36,16 @@ jobs:
   phplint:
     uses: tarosky/workflows/.github/workflows/phplint.yml@main
 
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/php@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN_FUMIKI }}
+
   release:
     name: Deploy WordPress.org
     needs: [ test, assets, phplint ]
