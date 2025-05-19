@@ -1,6 +1,7 @@
 name: Latest WP Support
 
 on:
+  workflow_dispatch
   schedule:
     - cron: "0 2 5 * *" # Every month on the 5th at 2am UTC
 
@@ -18,7 +19,7 @@ jobs:
           node-version: '18'
 
       - name: Check wp version
-        uses: tarosky/farmhand-wp-aciton@v1
+        uses: tarosky/farmhand-wp-action@v1
         id: wp_version
 
       - name: Update Issue if needed
@@ -34,6 +35,6 @@ jobs:
             - [ ] Bump "Tested up to" version in README.md
 
           labels: |
-            update
+            wp-org
           assignees: |
-            user1
+            fumikito
