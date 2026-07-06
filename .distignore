@@ -9,12 +9,16 @@
 .stylelintrc.json
 .wordpress-org
 .wp-env.json
+/assets
 node_modules
 composer.lock
 package-lock.json
 phpcs.ruleset.xml
+phpstan.neon
+phpstan-baseline.neon
 phpunit.xml.dist
 README.md
+gulpfile.js
 webpack.config.js
 wordpress
 bin

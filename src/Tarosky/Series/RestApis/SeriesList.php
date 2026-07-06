@@ -26,7 +26,7 @@ class SeriesList extends RestApi {
 			'post_type'      => [
 				'type'              => 'string',
 				'required'          => true,
-				'validate_callback' => function( $var ) {
+				'validate_callback' => function ( $var ) {
 					return taro_series_can_be( $var );
 				},
 			],
@@ -41,14 +41,14 @@ class SeriesList extends RestApi {
 			'posts_per_page' => [
 				'type'              => 'int',
 				'default'           => 10,
-				'validate_callback' => function( $var ) {
+				'validate_callback' => function ( $var ) {
 					return ( -1 === $var ) || ( 0 < $var );
 				},
 			],
 			'order'          => [
 				'type'              => 'string',
 				'default'           => 'DESC',
-				'validate_callback' => function( $var ) {
+				'validate_callback' => function ( $var ) {
 					return in_array( $var, [ 'DESC', 'ASC' ], true );
 				},
 			],
@@ -85,7 +85,7 @@ class SeriesList extends RestApi {
 		if ( ! $query->have_posts() ) {
 			return new \WP_REST_Response( [] );
 		}
-		return new \WP_REST_Response( array_map( function( \WP_Post $post ) {
+		return new \WP_REST_Response( array_map( function ( \WP_Post $post ) {
 			return [
 				'id'        => $post->ID,
 				'title'     => get_the_title( $post ),

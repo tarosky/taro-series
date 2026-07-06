@@ -26,16 +26,16 @@ class Setting extends Singleton {
 			return;
 		}
 		// Register setting.
-		add_settings_section( 'taro-series', __( 'Series Setting', 'taro-series' ), function() {
+		add_settings_section( 'taro-series', __( 'Series Setting', 'taro-series' ), function () {
 			printf(
 				'<p class="description">%s</p>',
 				esc_html__( 'In this section, you can define how series works in your site. Go Customize section to change display setting.', 'taro-series' )
 			);
 		}, 'writing' );
 		// Register fields.
-		add_settings_field( 'taro_series_post_types', __( 'Post Type', 'taro-series' ), function() {
+		add_settings_field( 'taro_series_post_types', __( 'Post Type', 'taro-series' ), function () {
 			$post_types = get_post_types( [ 'public' => true ], OBJECT );
-			$post_types = apply_filters( 'taro_series_post_types_choices', array_values( array_filter( $post_types, function( \WP_Post_Type $post_type ) {
+			$post_types = apply_filters( 'taro_series_post_types_choices', array_values( array_filter( $post_types, function ( \WP_Post_Type $post_type ) {
 				return ! in_array( $post_type->name, [ 'attachment', taro_series_parent_post_type() ], true );
 			} ) ) );
 			$value      = (array) get_option( 'taro_series_post_types', [] );
@@ -59,7 +59,7 @@ class Setting extends Singleton {
 					'<p><strong>%s</strong> %s %s</p>',
 					esc_html__( 'Notice:', 'taro-series' ),
 					esc_html__( 'Post types are programatticaly pre-defined. The setting above will be omitted.', 'taro-series' ),
-					implode( ', ', array_map( function( $pre ) {
+					implode( ', ', array_map( function ( $pre ) {
 						return sprintf( '<code>%s</code>', esc_html( $pre ) );
 					}, $predefined ) )
 				);

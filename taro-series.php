@@ -5,8 +5,8 @@
  * Description: Add series feature to your WordPress site.
  * Author: Tarosky INC.
  * Version: nightly
- * Requires at least: 5.9
- * Requires PHP: 7.2
+ * Requires at least: 6.6
+ * Requires PHP: 7.4
  * Author URI: https://tarosky.co.jp/
  * License: GPL3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -23,7 +23,7 @@ function taro_series_init() {
 	// Register translations.
 	load_plugin_textdomain( 'taro-series', false, basename( __DIR__ ) . '/languages' );
 	// Load functions.
-	require_once  __DIR__ . '/includes/functions.php';
+	require_once __DIR__ . '/includes/functions.php';
 	// Require Bootstrap.
 	$autoload = __DIR__ . '/vendor/autoload.php';
 	if ( ! file_exists( $autoload ) ) {

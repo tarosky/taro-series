@@ -34,7 +34,7 @@ class SeriesArticles extends RestApi {
 			'series_id' => [
 				'required'          => true,
 				'type'              => 'int',
-				'validate_callback' => function( $post_id ) {
+				'validate_callback' => function ( $post_id ) {
 					$post = get_post( $post_id );
 					return $post && ( taro_series_parent_post_type() === $post->post_type );
 				},
@@ -54,7 +54,7 @@ class SeriesArticles extends RestApi {
 					'paged'          => [
 						'type'              => 'int',
 						'default'           => 1,
-						'sanitize_callback' => function( $var ) {
+						'sanitize_callback' => function ( $var ) {
 							return max( 1, $var );
 						},
 					],

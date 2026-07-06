@@ -185,7 +185,7 @@ class Rewrite extends Singleton {
 		if ( $this->is_series_update( $wp_query ) ) {
 			/* @var \wpdb $wpdb */
 			global $wpdb;
-			$post_types = implode( ', ', array_map( function( $post_type ) use ( $wpdb ) {
+			$post_types = implode( ', ', array_map( function ( $post_type ) use ( $wpdb ) {
 				return $wpdb->prepare( '%s', $post_type );
 			}, taro_series_post_types() ) );
 			$func       = ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? 'MIN' : 'MAX';
