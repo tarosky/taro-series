@@ -73,6 +73,13 @@ Create a new [issue](https://github.com/tarosky/taro-series/issues) or send [pul
 
 ## Changelog
 
+### 2.1.0
+
+* Flush rewrite rules on plugin activation so that series permalinks work without a manual permalink resave.
+* Fix a bug where removing an article from a series could incorrectly report it as not part of the series.
+* Bump minimum PHP requirement to PHP 7.4 and over.
+* Bump minimum WordPress version to 6.6.
+
 ### 2.0.0
 
 * Add WP_Query orderby parameter `series-updated`.
