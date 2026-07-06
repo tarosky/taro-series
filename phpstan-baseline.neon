@@ -1,0 +1,43 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Class WP_Post referenced with incorrect case\: WP_post\.$#'
+			identifier: class.nameCase
+			count: 1
+			path: includes/functions.php
+
+		-
+			message: '#^Function taro_series_index_query\(\) should return WP_Query but returns null\.$#'
+			identifier: return.type
+			count: 2
+			path: includes/functions.php
+
+		-
+			message: '#^Parameter \#1 \$text of function esc_attr expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Tarosky/Series/Controller/PostEditor.php
+
+		-
+			message: '#^Parameter \#1 \$text of function esc_attr expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Tarosky/Series/Controller/SeriesEditor.php
+
+		-
+			message: '#^Found usage of constant DOING_AJAX\. Use wp_doing_ajax\(\) instead\.$#'
+			identifier: phpstanWP.wpConstant.fetch
+			count: 1
+			path: src/Tarosky/Series/Controller/Setting.php
+
+		-
+			message: '#^Parameter \#2 \$output of function get_post_types expects ''names''\|''objects'', ''OBJECT'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Tarosky/Series/Controller/Setting.php
+
+		-
+			message: '#^Method Tarosky\\Series\\Pattern\\CustomizerPattern\:\:controller_args\(\) should return array\{type\: string, priority\: int, active_callback\?\: callable\(\)\: mixed, input_attrs\: array, label\: string, description\: string\} but returns array\{priority\: 10, section\: string\}\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Tarosky/Series/Pattern/CustomizerPattern.php

@@ -38,7 +38,7 @@ function taro_series_post_types_predefined() {
 	if ( ! defined( 'TARO_SERIES_POST_TYPES' ) ) {
 		return apply_filters( 'taro_series_post_types', [] );
 	}
-	return array_values( array_filter( array_map( function( $post_type ) {
+	return array_values( array_filter( array_map( function ( $post_type ) {
 		$post_type = trim( $post_type );
 		return post_type_exists( $post_type ) ? $post_type : '';
 	}, explode( ',', TARO_SERIES_POST_TYPES ) ) ) );
