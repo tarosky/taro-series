@@ -35,6 +35,22 @@ function taro_series_init() {
 }
 
 /**
+ * Flush rewrite rules so that series permalinks work without a manual permalink resave.
+ */
+function taro_series_activate() {
+	taro_series_init();
+	\Tarosky\Series\Bootstrap::get_instance()->register_series_type();
+	flush_rewrite_rules();
+}
+
+/**
+ * Flush rewrite rules on deactivation to remove series-specific rules.
+ */
+function taro_series_deactivate() {
+	flush_rewrite_rules();
+}
+
+/**
  * Get plugin base URL.
  *
  * @return string
@@ -70,3 +86,5 @@ function taro_series_version() {
 
 // Register hooks.
 add_action( 'plugins_loaded', 'taro_series_init' );
+register_activation_hook( __FILE__, 'taro_series_activate' );
+register_deactivation_hook( __FILE__, 'taro_series_deactivate' );
