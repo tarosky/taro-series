@@ -35,11 +35,11 @@ class SeriesList extends RestApi {
 				'default' => '',
 			],
 			'p'              => [
-				'type'    => 'int',
+				'type'    => 'integer',
 				'default' => 0,
 			],
 			'posts_per_page' => [
-				'type'              => 'int',
+				'type'              => 'integer',
 				'default'           => 10,
 				'validate_callback' => function ( $var ) {
 					return ( -1 === $var ) || ( 0 < $var );

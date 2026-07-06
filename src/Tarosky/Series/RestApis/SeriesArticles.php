@@ -33,7 +33,7 @@ class SeriesArticles extends RestApi {
 		$args = [
 			'series_id' => [
 				'required'          => true,
-				'type'              => 'int',
+				'type'              => 'integer',
 				'validate_callback' => function ( $post_id ) {
 					$post = get_post( $post_id );
 					return $post && ( taro_series_parent_post_type() === $post->post_type );
@@ -48,11 +48,11 @@ class SeriesArticles extends RestApi {
 						'default' => '',
 					],
 					'posts_per_page' => [
-						'type'    => 'int',
+						'type'    => 'integer',
 						'default' => 10,
 					],
 					'paged'          => [
-						'type'              => 'int',
+						'type'              => 'integer',
 						'default'           => 1,
 						'sanitize_callback' => function ( $var ) {
 							return max( 1, $var );
@@ -63,7 +63,7 @@ class SeriesArticles extends RestApi {
 			case 'POST':
 			case 'DELETE':
 				$args['post_id'] = [
-					'type'     => 'int',
+					'type'     => 'integer',
 					'required' => true,
 				];
 				break;
@@ -154,7 +154,7 @@ class SeriesArticles extends RestApi {
 		$series_id = (int) $request->get_param( 'series_id' );
 		$post_id   = (int) $request->get_param( 'post_id' );
 		$series    = taro_series_get( $post_id );
-		if ( ! $series || ( $series_id !== $series->ID ) ) {
+		if ( ! $series || ( $series_id !== (int) $series->ID ) ) {
 			// translators: %1$d is post id, %2$d is series id.
 			return new \WP_Error( 'rest_api_error', sprintf( __( '#%1$d is not a part of series #%2$d', 'taro-series' ), $post_id, $series_id ), [
 				'status' => 400,
