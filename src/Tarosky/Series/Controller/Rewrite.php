@@ -191,7 +191,7 @@ class Rewrite extends Singleton {
 			$func       = ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? 'MIN' : 'MAX';
 			$sql        = <<<SQL
 				INNER JOIN (
-					SELECT CAST( pm.meta_value AS INT ) AS series_id , {$func}( p.post_date ) as last_updated
+					SELECT CAST( pm.meta_value AS UNSIGNED ) AS series_id , {$func}( p.post_date ) as last_updated
 					FROM {$wpdb->posts} AS p
 					LEFT JOIN {$wpdb->postmeta} AS pm
 					ON pm.meta_key = %s AND pm.post_id = p.ID
