@@ -34,8 +34,6 @@ class Bootstrap extends Singleton {
 	protected function init() {
 		// Post type.
 		add_action( 'init', [ $this, 'register_series_type' ], 20 );
-		// Assets.
-		add_action( 'init', [ $this, 'register_script' ], 21 );
 		// Controllers.
 		PostEditor::get_instance();
 		SeriesEditor::get_instance();
@@ -72,38 +70,6 @@ class Bootstrap extends Singleton {
 		}
 		$args = taro_series_parent_post_type_args();
 		register_post_type( $post_type, $args );
-	}
-
-	/**
-	 * Register asset.
-	 */
-	public function register_script() {
-		$json = taro_series_dir() . '/wp-dependencies.json';
-		if ( ! file_exists( $json ) ) {
-			trigger_error( __( 'Dependency file wp-dependencies.json is missing. Did you run build script?', 'taro-series' ), E_USER_WARNING );
-			return;
-		}
-		$json = json_decode( file_get_contents( $json ), true );
-		if ( ! $json ) {
-			return;
-		}
-		foreach ( $json as $asset ) {
-			if ( ! $asset ) {
-				continue;
-			}
-			switch ( $asset['ext'] ) {
-				case 'css':
-					wp_register_style( $asset['handle'], taro_series_url() . '/' . $asset['path'], $asset['deps'], $asset['hash'], $asset['media'] );
-					break;
-				case 'js':
-					wp_register_script( $asset['handle'], taro_series_url() . '/' . $asset['path'], $asset['deps'], $asset['hash'], $asset['footer'] );
-					// If requires translations, register.
-					if ( in_array( 'wp-i18n', $asset['deps'], true ) ) {
-						wp_set_script_translations( $asset['handle'], 'taro-series' );
-					}
-					break;
-			}
-		}
 	}
 
 	/**

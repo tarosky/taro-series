@@ -84,7 +84,44 @@ function taro_series_version() {
 	return $version;
 }
 
+/**
+ * Register assets from wp-dependencies.json.
+ */
+function taro_series_register_assets() {
+	$json = __DIR__ . '/wp-dependencies.json';
+	if ( ! file_exists( $json ) ) {
+		return;
+	}
+	$dependencies = json_decode( file_get_contents( $json ), true );
+	if ( empty( $dependencies ) ) {
+		return;
+	}
+	$base = trailingslashit( plugin_dir_url( __FILE__ ) );
+	foreach ( $dependencies as $dep ) {
+		if ( empty( $dep['path'] ) ) {
+			continue;
+		}
+		$url = $base . $dep['path'];
+		switch ( $dep['ext'] ) {
+			case 'css':
+				wp_register_style( $dep['handle'], $url, $dep['deps'], $dep['hash'], $dep['media'] );
+				break;
+			case 'js':
+				$footer = [ 'in_footer' => $dep['footer'] ];
+				if ( in_array( $dep['strategy'], [ 'defer', 'async' ], true ) ) {
+					$footer['strategy'] = $dep['strategy'];
+				}
+				wp_register_script( $dep['handle'], $url, $dep['deps'], $dep['hash'], $footer );
+				if ( in_array( 'wp-i18n', $dep['deps'], true ) ) {
+					wp_set_script_translations( $dep['handle'], 'taro-series' );
+				}
+				break;
+		}
+	}
+}
+
 // Register hooks.
+add_action( 'init', 'taro_series_register_assets' );
 add_action( 'plugins_loaded', 'taro_series_init' );
 register_activation_hook( __FILE__, 'taro_series_activate' );
 register_deactivation_hook( __FILE__, 'taro_series_deactivate' );
