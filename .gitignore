@@ -3,3 +3,4 @@
 /wordpress
 /dist
 wp-dependencies.json
+.phpunit.result.cache

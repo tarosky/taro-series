@@ -6,6 +6,17 @@ on:
       - main
 
 jobs:
+  test:
+    name: PHP UnitTest
+    strategy:
+      matrix:
+        php: [ '7.4', '8.3' ] # PHP versions to check.
+        wp: [ 'latest', '6.6' ] # WordPress version to check.
+    uses: tarosky/workflows/.github/workflows/wp-unit-test.yml@main
+    with:
+      php_version: ${{ matrix.php }}
+      wp_version: ${{ matrix.wp }}
+
   phpcs:
     name: PHP Syntax Check
     uses: tarosky/workflows/.github/workflows/phpcs.yml@main
@@ -40,7 +51,7 @@ jobs:
   status-check:
     name: Status Check
     runs-on: ubuntu-latest
-    needs: [ phpcs, phpstan, assets ]
+    needs: [ test, phpcs, phpstan, assets ]
     if: always()
     steps:
       - uses: re-actors/alls-green@release/v1
