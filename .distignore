@@ -18,11 +18,11 @@ phpstan.neon
 phpstan-baseline.neon
 phpunit.xml.dist
 README.md
-gulpfile.js
-webpack.config.js
 wordpress
 bin
 tests
 taro-series.php.bak
 readme.txt.bak
 .claude
+.husky
+.phpunit.result.cache

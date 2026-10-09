@@ -48,7 +48,7 @@ registerBlockType( name, {
 							onChange={ ( title ) => setAttributes( { title } ) }
 							placeholder={ /* translators: %s is series title */ __( 'TOC of "%s"', 'taro-series' ) }
 							help={ help } />
-						<SeriesSelector value={ attributes.series_id } onChange={ ( series_id ) => setAttributes( { series_id: parseInt( series_id, 10 ) } ) } />
+						<SeriesSelector value={ attributes.series_id } onChange={ ( seriesId ) => setAttributes( { series_id: parseInt( seriesId, 10 ) } ) } />
 					</PanelBody>
 				</InspectorControls>
 				<div className="taro-series-toc-editor" style={ { 'pointer-events': 'none' } }>
