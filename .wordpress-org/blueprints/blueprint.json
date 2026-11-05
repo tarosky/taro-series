@@ -1,0 +1,38 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+    "meta": {
+        "title": "Taro Series demo: a serialized baking blog",
+        "description": "An eight-part sourdough series with a table of contents on every post, upcoming parts shown as Coming Soon, and a completed pasta series.",
+        "author": "tarosky",
+        "categories": [
+            "Content"
+        ]
+    },
+    "landingPage": "/sourdough-part-1/",
+    "preferredVersions": {
+        "php": "8.2",
+        "wp": "latest"
+    },
+    "features": {
+        "networking": true
+    },
+    "steps": [
+        {
+            "step": "login"
+        },
+        {
+            "step": "installPlugin",
+            "pluginData": {
+                "resource": "wordpress.org/plugins",
+                "slug": "taro-series"
+            },
+            "options": {
+                "activate": true
+            }
+        },
+        {
+            "step": "runPHP",
+            "code": "<?php\n/**\n * Live Preview のデモデータ。\n *\n * シナリオ: 架空の料理ブログ。8 回連載「Sourdough from Scratch」（5 回公開済み・3 回予約投稿）と\n * 完結済みの 3 回連載「Weeknight Pasta」。着地は連載第 1 回（/sourdough-part-1/）で、\n * 本文の下に自動で付く目次（現在地・Coming Soon）を見せる。\n *\n * このファイルがマスター。編集したら次で blueprint.json に埋め込むこと:\n *   php <skill>/scripts/blueprint.php embed .\n */\nrequire '/wordpress/wp-load.php';\n\n// runPHP はログインユーザー無しで動く。権限チェックのある API（tax_input など）が黙って無視されるので、管理者として実行する。\nwp_set_current_user( 1 );\n\n// 着地ページのスラッグと、連載アーカイブ（/series/archive/{slug}）を使うため、パーマリンクを有効にする。\n// update_option() だけでは $wp_rewrite が古い構造のままで、最後の flush が投稿のルールを書き出さない。\nglobal $wp_rewrite;\n$wp_rewrite->set_permalink_structure( '/%postname%/' );\nupdate_option( 'blogname', 'Crumb & Crust' );\nupdate_option( 'blogdescription', 'A home baking journal' );\n\n// プラグイン設定: 投稿を連載に入れられるようにし、目次の表示を有効にする（カスタマイザーの値はオプションに保存される）。\nupdate_option( 'taro_series_post_types', array( 'post' ) );\nupdate_option( 'taro_series_index_in_post', '1' );\nupdate_option( 'taro_series_index_in_series', '1' );\nupdate_option( 'taro_series_include_scheduled_posts', '1' );\nupdate_option( 'taro_series_order', 'ASC' );\nupdate_option( 'taro_series_toc_title', 'Series: %s' );\n\n$category = wp_insert_term( 'Baking', 'category' );\n$cat_id   = is_wp_error( $category ) ? 1 : (int) $category['term_id'];\n\n/**\n * 連載の親（series 投稿）を作る。\n *\n * @param string $title   Title.\n * @param string $slug    Slug.\n * @param string $content Content.\n * @param array  $meta    Series meta (total, is_finished, finish_at).\n * @return int\n */\n$create_series = function ( $title, $slug, $content, $meta ) {\n\t$series_id = wp_insert_post( array(\n\t\t'post_type'    => taro_series_parent_post_type(),\n\t\t'post_status'  => 'publish',\n\t\t'post_title'   => $title,\n\t\t'post_name'    => $slug,\n\t\t'post_content' => $content,\n\t) );\n\tforeach ( $meta as $key => $value ) {\n\t\tupdate_post_meta( $series_id, '_series_' . $key, $value );\n\t}\n\treturn $series_id;\n};\n\n/**\n * 連載の記事を作る。日付は現在時刻からの相対（日数）で、未来なら予約投稿にする。\n *\n * @param int    $series_id Series ID.\n * @param string $title     Title.\n * @param string $slug      Slug.\n * @param string $body      Body text.\n * @param int    $days      Days from now (negative = past).\n * @return int\n */\n$create_article = function ( $series_id, $title, $slug, $body, $days ) use ( $cat_id ) {\n\t$timestamp = time() + $days * DAY_IN_SECONDS;\n\t$post_id   = wp_insert_post( array(\n\t\t'post_type'     => 'post',\n\t\t'post_status'   => 0 < $days ? 'future' : 'publish',\n\t\t'post_title'    => $title,\n\t\t'post_name'     => $slug,\n\t\t'post_content'  => \"<!-- wp:paragraph -->\\n<p>\" . $body . \"</p>\\n<!-- /wp:paragraph -->\",\n\t\t'post_date'     => wp_date( 'Y-m-d H:i:s', $timestamp ),\n\t\t'post_date_gmt' => gmdate( 'Y-m-d H:i:s', $timestamp ),\n\t\t'post_category' => array( $cat_id ),\n\t) );\n\tupdate_post_meta( $post_id, taro_series_meta_key(), $series_id );\n\treturn $post_id;\n};\n\n// 連載 1: 進行中。8 回中 5 回が公開済み、残りは毎週公開予定。\n$sourdough = $create_series(\n\t'Sourdough from Scratch',\n\t'sourdough-from-scratch',\n\t\"<!-- wp:paragraph -->\\n<p>An eight-part journey from a jar of flour and water to a crackling loaf. A new part every week.</p>\\n<!-- /wp:paragraph -->\",\n\tarray(\n\t\t'total'       => 8,\n\t\t'is_finished' => '',\n\t\t'finish_at'   => wp_date( 'Y-m-d', time() + 20 * DAY_IN_SECONDS ),\n\t)\n);\n$parts     = array(\n\tarray( 'Part 1: Why Bake Sourdough?', 'What wild yeast gives you that a packet of instant yeast cannot, and what you need to get started.' ),\n\tarray( 'Part 2: Building Your Starter', 'Day-by-day notes on feeding a starter, from the first bubbles to a reliable rise.' ),\n\tarray( 'Part 3: Flour, Water, Salt', 'Choosing flours and understanding hydration, with a simple 75% dough to begin with.' ),\n\tarray( 'Part 4: Stretch and Fold', 'Building strength in the dough without kneading. Timing, temperature and what to look for.' ),\n\tarray( 'Part 5: Shaping the Loaf', 'Pre-shaping, bench rest and final shaping for a tight, even boule.' ),\n\tarray( 'Part 6: The Overnight Proof', 'Using the fridge to slow fermentation and fit baking into a busy week.' ),\n\tarray( 'Part 7: Scoring and Baking', 'Blades, patterns and the Dutch oven method for a dramatic ear.' ),\n\tarray( 'Part 8: Troubleshooting Your Crumb', 'Reading the crumb to fix dense, gummy or flat loaves.' ),\n);\nforeach ( $parts as $index => $part ) {\n\t// 第 1 回は 29 日前、以降は 7 日おき（-29, -22, -15, -8, -1, 6, 13, 20）。第 6 回以降は予約投稿になり「Coming Soon」として目次に出る。\n\t$create_article( $sourdough, $part[0], 'sourdough-part-' . ( $index + 1 ), $part[1], -29 + $index * 7 );\n}\n\n// 連載 2: 完結済み。連載ごとに目次が分かれることを見せる。\n$pasta  = $create_series(\n\t'Weeknight Pasta',\n\t'weeknight-pasta',\n\t\"<!-- wp:paragraph -->\\n<p>Three pasta dinners you can make in under thirty minutes.</p>\\n<!-- /wp:paragraph -->\",\n\tarray(\n\t\t'total'       => 3,\n\t\t'is_finished' => '1',\n\t\t'finish_at'   => '',\n\t)\n);\n$dishes = array(\n\tarray( 'Weeknight Pasta #1: Cacio e Pepe', 'Three ingredients, one pan, and the trick to a glossy sauce that never clumps.' ),\n\tarray( 'Weeknight Pasta #2: Lemon Ricotta Spaghetti', 'A bright, no-cook sauce that comes together while the water boils.' ),\n\tarray( 'Weeknight Pasta #3: Sausage and Broccoli Rabe', 'Bitter greens, rich sausage and orecchiette for a complete meal in a bowl.' ),\n);\nforeach ( $dishes as $index => $dish ) {\n\t$create_article( $pasta, $dish[0], 'weeknight-pasta-' . ( $index + 1 ), $dish[1], -60 + $index * 3 );\n}\n\n// 連載に入っていない普通の記事も 1 件置き、目次が付かないことと対比する。\nwp_insert_post( array(\n\t'post_type'     => 'post',\n\t'post_status'   => 'publish',\n\t'post_title'    => 'Our Favorite Kitchen Scale',\n\t'post_name'     => 'favorite-kitchen-scale',\n\t'post_content'  => \"<!-- wp:paragraph -->\\n<p>A standalone review. This post is not part of any series, so no table of contents appears below.</p>\\n<!-- /wp:paragraph -->\",\n\t'post_date'     => wp_date( 'Y-m-d H:i:s', time() - 3 * DAY_IN_SECONDS ),\n\t'post_category' => array( $cat_id ),\n) );\n\n// 不要な既定コンテンツを片付ける。\nwp_delete_post( 1, true ); // Hello world!\nwp_delete_post( 2, true ); // Sample Page\n\n// 新しいパーマリンク構造と連載アーカイブのルールを反映する。\nflush_rewrite_rules();\n"
+        }
+    ]
+}
